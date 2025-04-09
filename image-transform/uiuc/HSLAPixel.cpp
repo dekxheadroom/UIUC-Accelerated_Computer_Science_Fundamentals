@@ -12,4 +12,9 @@
 using namespace std;
 
 namespace uiuc {
+    uiuc::HSLAPixel::HSLAPixel() : h(0.0), s(0.0), l(1.0), a(1.0) {};
+    // Initialization list  for constructors
+    uiuc::HSLAPixel::HSLAPixel(double hue, double sat, double lum, double alph) :
+    h(hue), s(sat), l(lum), a(alph){};
+
 }
