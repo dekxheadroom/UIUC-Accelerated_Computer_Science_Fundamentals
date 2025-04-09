@@ -81,7 +81,7 @@ PNG createSpotlight(PNG image, int centerX, int centerY) {
         lum_factor = 0.2; //decreate by 80%
       } else {
         lum_factor = 1.0 - (dist*0.005); //decrease by 0.5% per pix
-        if (lum_factor < 0.2) {lum_factor = 0.2}; //cap de-illum at 80%
+        if (lum_factor < 0.2) {lum_factor = 0.2;}; //cap de-illum at 80%
       }
       
       HSLAPixel & pixel = image.getPixel(x, y);
