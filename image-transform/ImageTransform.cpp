@@ -119,9 +119,9 @@ PNG illinify(PNG image) {
       if (distToBlue > 180.0) distToBlue = 360.0 - distToBlue;
 
       if (distToBlue < distToOrange) {
-        pixel.h = Ill_Orange;
-      } else {
         pixel.h = Ill_Blue;
+      } else {
+        pixel.h = Ill_Orange;
       }
     }
   }
