@@ -67,7 +67,26 @@ PNG grayscale(PNG image) {
  * @return The image with a spotlight.
  */
 PNG createSpotlight(PNG image, int centerX, int centerY) {
+  //start from centre of image, each pixel decrease lum by factor of 0.05
+  //up till the edge of image
+  for (unsigned x = 0; x < image.width(); x++) {
+    for (unsigned y = 0; y < image.height(); y++) {
+      int deltaX = x - centerX;
+      int deltaY = y - centerY;
+      double distSq = deltaX*deltaX + deltaY*deltaY;
+      double dist = sqrt(distSq);
+      double lum_factor = 1.0;
 
+      if (dist > 160.0) {
+        lum_factor = 0.2; //decreate by 80%
+      } else {
+        lum_factor = 1.0 - (dist*0.005); //decrease by 0.5% per pix
+        if (lum_factor < 0.2) {lum_factor = 0.2}; //cap de-illum at 80%
+      }
+      
+      HSLAPixel & pixel = image.getPixel(x, y);
+      pixel.l *= lum_factor; 
+  }
   return image;
   
 }
