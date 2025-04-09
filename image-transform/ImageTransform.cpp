@@ -78,19 +78,18 @@ PNG createSpotlight(PNG image, int centerX, int centerY) {
       double lum_factor = 1.0;
 
       if (dist > 160.0) {
-        lum_factor = 0.2; //decreate by 80%
+        lum_factor = 0.2; //decrease by 80%
       } else {
         lum_factor = 1.0 - (dist*0.005); //decrease by 0.5% per pix
         if (lum_factor < 0.2) {lum_factor = 0.2;}; //cap de-illum at 80%
       }
       
       HSLAPixel & pixel = image.getPixel(x, y);
-      pixel.l *= lum_factor; 
+      pixel.l *= lum_factor;
+    }
   }
   return image;
-  
 }
- 
 
 /**
  * Returns a image transformed to Illini colors.
@@ -103,8 +102,30 @@ PNG createSpotlight(PNG image, int centerX, int centerY) {
  * @return The illinify'd image.
 **/
 PNG illinify(PNG image) {
+  //find the mid-point value between Illini Orange (11) and Illini Blue (216)
+  //if pixel hue value less than mid-point, set hue to Orange
+  //if pixel hue value greater than mid-point set hue to Blue
+  int Ill_Orange = 11;
+  int Ill_Blue = 216;
 
-  return image;
+  for (unsigned x = 0; x < image.width(); x++) {
+    for (unsigned y = 0; y < image.height(); y++) {
+      HSLAPixel & pixel = image.getPixel(x, y);
+    
+      double distToOrange = std::fmod(std::abs(pixel.h - Ill_Orange), 360.0);
+      double distToBlue = std::fmod(std::abs(pixel.h - Ill_Blue), 360.0);
+
+      if (distToOrange > 180.0) distToOrange = 360.0 - distToOrange;
+      if (distToBlue > 180.0) distToBlue = 360.0 - distToBlue;
+
+      if (distToBlue < distToOrange) {
+        pixel.h = Ill_Orange;
+      } else {
+        pixel.h = Ill_Blue;
+      }
+    }
+  }
+return image;
 }
  
 
@@ -121,6 +142,24 @@ PNG illinify(PNG image) {
 * @return The watermarked image.
 */
 PNG watermark(PNG firstImage, PNG secondImage) {
+  //define the boundaries which both image overlaps;
+  //iterate over pixels of secondImage (stencil) within boundaries
+  //if secondImage's luminance value is 1,
+  //increase luminiscence value of corresponding pixel of firstImage(base)
+  //by 0.2 but not exceeding 1.0 
+  unsigned minWidth = std::min(firstImage.width(), secondImage.width());
+  unsigned minHeight = std::min(firstImage.height(), secondImage.height());
 
+  for (unsigned x = 0; x < minWidth; x++) {
+    for (unsigned y = 0; y < minHeight; y++) {
+      HSLAPixel & stencil_pixel = secondImage.getPixel(x, y);
+      if (stencil_pixel.l==1) { //checking luminescence of stencil pixel
+        HSLAPixel & base_pixel = firstImage.getPixel(x,y);
+        base_pixel.l += 0.2;
+        if (base_pixel.l > 1.0){base_pixel.l = 1.0;}   
+        //clamp luminence to 1.0
+      }
+    }
+  } 
   return firstImage;
 }
