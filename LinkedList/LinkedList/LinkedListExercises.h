@@ -86,7 +86,6 @@ void LinkedList<T>::insertOrdered(const T& newData) {
   // -----------------------------------------------------------
   // Please implement this function according to the description
   // above and in the instructions PDF.
-
   // Hints:
   // Make your new node on the heap and then find where it needs to
   // go in the list. A good way to do this is by considering special
@@ -128,6 +127,46 @@ void LinkedList<T>::insertOrdered(const T& newData) {
   // to update all next, prev, head_, and tail_ pointers as needed on your
   // new node or on those existing nodes that are adjacent to the new node.
 
+    
+  /* if LinkedList object is empty, new item placed at end of list and exit
+  */
+  if (size_==0){
+    pushBack(newData);
+    return;
+  }
+  else 
+  {
+/* 
+ look for correct position for new element, 
+compare value of current node with value of left and right node
+if meet condition, create new node on heap, prev and next pointers will point to left and right nodes
+else, continue walking; smallest value is at front, which is leftmost
+*/
+  Node* cur_node = head_;
+  if (cur_node->data > newData){
+    Node* newNode = new Node(newData);
+    newNode->prev = nullptr;
+    newNode->next = head_;
+    head_->prev = newNode;
+    head_ = newNode;
+    size_++;
+    return;
+  } else 
+    {
+      while (cur_node->next != nullptr && cur_node->next->data < newData){cur_node = cur_node->next;}
+      //traverse to position just before node with value equal or greater than newData
+      Node* newNode = new Node(newData);
+      //set newNode pointers to previous and next nodes
+      newNode->next = cur_node->next;
+      newNode->prev = cur_node;
+      cur_node->next = newNode;
+      if (newNode->next != nullptr) {newNode->next->prev=newNode;} else {
+        tail_ = newNode;
+      } 
+      size_++;
+      return;
+    }
+  }   
 }
 
 /********************************************************************
