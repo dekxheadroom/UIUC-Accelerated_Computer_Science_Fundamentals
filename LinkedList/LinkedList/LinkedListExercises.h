@@ -292,6 +292,33 @@ LinkedList<T> LinkedList<T>::merge(const LinkedList<T>& other) const {
   // notice that all of our nodes are created on the heap? The part of the
   // list that we pass back is really small; it just contains two pointers
   // and an int.)
-  return merged;
-}
+  
+  /* check for empty LinkedLists*/
+  if (left.empty() && right.empty()) {return merged;}
+  if (left.empty()) {return right;}
+  if (right.empty()) {return left;}
+ 
+  /*compare first element of left and rightlist;
+  add pushback smaller element to merged 
+  and popfront from list where smaller element obtained
+  for remainder of left or right list, push back to merged*/
 
+  while (!left.empty() && !right.empty()){
+    if (left.front() <= right.front()) {
+      merged.pushBack(left.front());
+      left.popFront();
+    } else {
+      merged.pushBack(right.front());
+      right.popFront();
+    }
+  }
+  while (!right.empty()){
+    merged.pushBack(right.front());
+    right.popFront();
+  }
+  while (!left.empty()){
+    merged.pushBack(left.front());
+    left.popFront();
+  }
+  return merged;}
+  
