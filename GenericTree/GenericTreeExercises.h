@@ -96,8 +96,20 @@ static void treeFactory(GenericTree<int>& tree) {
   // Build the contents of tree so that it matches the diagram above
   // when you print it out. The main() function runs that test for you.
 
-  // ...
-
+  // if tree is not empty, destroy existing content
+  tree.clear();
+  tree.createRoot(4); 
+  auto* node4 = tree.getRootPtr();
+  if (node4) {
+    auto* node8 = node4->addChild(8);
+    auto* node15 = node4->addChild(15);
+      if (node8) {
+        auto* node16 = node8->addChild(16);
+        auto* node23 = node8->addChild(23);
+            if (node16) {
+              auto* node42 = node16->addChild(42);}
+      }
+  }
 }
 
 // treeFactoryTest: This function demonstrates the execution of treeFactory
