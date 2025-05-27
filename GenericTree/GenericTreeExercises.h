@@ -337,7 +337,16 @@ std::vector<T> traverseLevels(GenericTree<T>& tree) {
   // with the .push_back() member function.
 
   // ...
-
+  std::queue<TreeNode*> nodes2explore;
+  nodes2explore.push(rootNodePtr);//initialise queue from root node
+  while (!nodes2explore.empty()) {
+    TreeNode* current_node = nodes2explore.front();
+    nodes2explore.pop();
+    results.push_back(current_node->data);
+    for (TreeNode* childpointer: current_node->childrenPtrs){
+      if (childpointer != nullptr){nodes2explore.push(childpointer);}
+    }
+  }
   return results;
 }
 
