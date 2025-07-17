@@ -57,7 +57,7 @@ StringIntMap makeWordCounts(const StringVec& words) {
   // EXERCISE 1 WORKSPACE: YOUR CODE HERE
   // =================================================
   for (std::string word: words){ //iterate through "words" 
-   wordcount_map[word]++
+   wordcount_map[word]++;
   } 
   return wordcount_map;
 }
